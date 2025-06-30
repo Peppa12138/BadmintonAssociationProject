@@ -53,7 +53,6 @@ public class MatchDAO {
     }
     
     // Create a new match record
-    // Create a new match record
     public void createMatch(Match match) throws SQLException {
         String query = "INSERT INTO Matches (date, start_time, end_time) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -61,6 +60,41 @@ public class MatchDAO {
         preparedStatement.setTimestamp(2, match.getStartTime()); // Updated to setTimestamp
         preparedStatement.setTimestamp(3, match.getEndTime()); // Updated to setTimestamp
         preparedStatement.executeUpdate();
+    }
+    
+    public int selectFreeCourt(Time startTime, Time endTime) throws SQLException {
+        String query = "SELECT court_id FROM Courts WHERE court_id NOT IN "
+                + "(SELECT court_id FROM Matches WHERE (start_time < ? AND end_time > ?)) LIMIT 1";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setTime(1, endTime);
+            preparedStatement.setTime(2, startTime);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("court_id");
+                }
+            }
+        }
+        throw new SQLException("No court available.");
+    }
+
+    public int createMatch(Date date, Time startTime, Time endTime, int courtId) throws SQLException {
+        String query = "INSERT INTO Matches (date, start_time, end_time, court_id) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query,
+                Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setDate(1, date);
+            preparedStatement.setTime(2, startTime);
+            preparedStatement.setTime(3, endTime);
+            preparedStatement.setInt(4, courtId);
+            preparedStatement.executeUpdate();
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
+        }
+        throw new SQLException("Creating match failed, no ID obtained.");
     }
 
     // Additional methods such as create, update, delete...

@@ -39,5 +39,14 @@ public class PlayerMatchDAO {
         preparedStatement.executeUpdate();
     }
 
+    public void insertPlayerMatch(int matchId, int playerId) throws SQLException {
+        String query = "INSERT INTO PlayerMatches (match_id, player_id) VALUES (?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, matchId);
+            preparedStatement.setInt(2, playerId);
+            preparedStatement.executeUpdate();
+        }
+    }
+
     // Additional methods such as update, delete...
 }

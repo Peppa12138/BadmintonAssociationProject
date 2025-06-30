@@ -65,5 +65,19 @@ public class MatchResultDAO {
         }
         return matchResults;
     }
+
+    public void insertMatchResult(int matchId, int playerId, int rankId, int score, boolean recordBroken)
+            throws SQLException {
+        String query = "INSERT INTO MatchResults (match_id, player_id, rank_id, score, record_broken) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, matchId);
+            preparedStatement.setInt(2, playerId);
+            preparedStatement.setInt(3, rankId);
+            preparedStatement.setInt(4, score);
+            preparedStatement.setBoolean(5, recordBroken);
+            preparedStatement.executeUpdate();
+        }
+    }
+
     // Additional methods such as update, delete...
 }

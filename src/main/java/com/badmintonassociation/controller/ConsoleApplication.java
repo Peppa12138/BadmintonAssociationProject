@@ -5,19 +5,22 @@ import com.badmintonassociation.service.CourtService;
 import com.badmintonassociation.service.ReservationService;
 import com.badmintonassociation.service.MatchService;
 import com.badmintonassociation.dao.PlayerDAO;
+import com.badmintonassociation.dao.PlayerMatchDAO;
 import com.badmintonassociation.dao.CourtDAO;
 import com.badmintonassociation.dao.ReservationDAO;
 import com.badmintonassociation.model.Reservation;
 import com.badmintonassociation.dao.MatchDAO;
 import com.badmintonassociation.dao.MatchResultDAO;
 import com.badmintonassociation.util.DatabaseConnection;
-
+import com.badmintonassociation.model.MatchResult;
 import java.util.List;
 import java.util.Scanner;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -35,6 +38,26 @@ public class ConsoleApplication {
         this.reservationService = reservationService;
         this.matchService = matchService;
     }
+    
+    private void viewPlayerResults(Scanner scanner) {
+        System.out.println("请输入选手编号:");
+        int playerId = scanner.nextInt();
+        scanner.nextLine(); // Consume the remaining newline
+
+        List<MatchResult> results = playerService.getLatestPlayerResults(playerId, 10);
+        if (results == null || results.isEmpty()) {
+            System.out.println("没有找到该选手的比赛成绩记录。");
+            return;
+        }
+
+        System.out.println("选手最近的比赛成绩如下：");
+        for (MatchResult result : results) {
+            System.out.println("比赛ID: " + result.getMatchId() +
+                    ", 名次: " + result.getRankId() +
+                    ", 得分: " + result.getScore() +
+                    ", 是否打破纪录: " + (result.isRecordBroken() ? "是" : "否"));
+        }
+    }
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -44,7 +67,8 @@ public class ConsoleApplication {
             System.out.println("2. 查看所有场地");
             System.out.println("3. 预定场地");
             System.out.println("4. 安排比赛");
-            System.out.println("5. 退出");
+            System.out.println("5. 查看选手成绩");
+            System.out.println("6. 退出");
             System.out.print("请选择操作: ");
 
             int choice = scanner.nextInt();
@@ -62,8 +86,12 @@ public class ConsoleApplication {
                     scheduleMatch(scanner);
                     break;
                 case 5:
+                    viewPlayerResults(scanner);
+                    break;
+                case 6:
                     System.out.println("退出系统.");
                     return;
+
                 default:
                     System.out.println("无效选择，请重新选择.");
             }
@@ -148,19 +176,68 @@ public class ConsoleApplication {
     private void scheduleMatch(Scanner scanner) {
         // 示例方法: 根据业务逻辑类的接口调用进行实现
         // 提示用户输入比赛相关的信息，并调用相应的业务逻辑方法
+        System.out.println("创建新的赛事...");
+        // 清除前一次输入留下的换行符
+        scanner.nextLine();
+        // 要求用户输入比赛日期
+        System.out.println("请输入比赛日期 (格式: yyyy-MM-dd):");
+        String dateInput = scanner.nextLine();
+
+        // 要求用户输入比赛开始时间
+        System.out.println("请输入比赛开始时间 (格式: HH:mm:ss):");
+        String startTimeInput = scanner.nextLine();
+
+        // 要求用户输入比赛结束时间
+        System.out.println("请输入比赛结束时间 (格式: HH:mm:ss):");
+        String endTimeInput = scanner.nextLine();
+
+        // 将输入转换为 LocalDate 和 LocalTime
+        LocalDate date = LocalDate.parse(dateInput, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalTime startTime = LocalTime.parse(startTimeInput, DateTimeFormatter.ofPattern("HH:mm:ss"));
+        LocalTime endTime = LocalTime.parse(endTimeInput, DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        // 创建比赛记录，比赛ID是数据库自动生成的
+        boolean success = matchService.createMatchWithPlayers(date, startTime, endTime);
+        if (success) {
+            System.out.println("比赛创建成功！");
+        } else {
+            System.out.println("比赛创建失败。");
+        }
     }
 
     public static void main(String[] args) {
-        // 示例初始化
-        PlayerService playerService = new PlayerService(new PlayerDAO(DatabaseConnection.getConnection()));
-        CourtService courtService = new CourtService(new CourtDAO(DatabaseConnection.getConnection()));
-        ReservationService reservationService = new ReservationService(
-                new ReservationDAO(DatabaseConnection.getConnection()),
-                new MatchDAO(DatabaseConnection.getConnection()));
-        MatchService matchService = new MatchService(new MatchDAO(DatabaseConnection.getConnection()),
-                new MatchResultDAO(DatabaseConnection.getConnection()));
+        // // 示例初始化
+        // PlayerService playerService = new PlayerService(new PlayerDAO(DatabaseConnection.getConnection()));
+        // CourtService courtService = new CourtService(new CourtDAO(DatabaseConnection.getConnection()));
+        // ReservationService reservationService = new ReservationService(
+        //         new ReservationDAO(DatabaseConnection.getConnection()),
+        //         new MatchDAO(DatabaseConnection.getConnection()));
+        // MatchService matchService = new MatchService(new MatchDAO(DatabaseConnection.getConnection()),
+        //         new MatchResultDAO(DatabaseConnection.getConnection()));
 
-        ConsoleApplication app = new ConsoleApplication(playerService, courtService, reservationService, matchService);
-        app.start();
+        // ConsoleApplication app = new ConsoleApplication(playerService, courtService, reservationService, matchService);
+        // app.start();
+        // 获取数据库连接
+    Connection connection = DatabaseConnection.getConnection();
+
+    // 创建各个 DAO 实例
+    PlayerDAO playerDAO = new PlayerDAO(connection);
+    CourtDAO courtDAO = new CourtDAO(connection);
+    ReservationDAO reservationDAO = new ReservationDAO(connection);
+    MatchDAO matchDAO = new MatchDAO(connection);
+    PlayerMatchDAO playerMatchDAO = new PlayerMatchDAO(connection);
+    MatchResultDAO matchResultDAO = new MatchResultDAO(connection);
+
+    // 使用 DAO 实例创建 Service 实例
+    PlayerService playerService = new PlayerService(playerDAO);
+    CourtService courtService = new CourtService(courtDAO);
+    ReservationService reservationService = new ReservationService(reservationDAO, matchDAO);
+
+    // Ensure MatchService receives all required DAO instances
+    MatchService matchService = new MatchService(matchDAO, playerDAO, playerMatchDAO, matchResultDAO);
+
+    // 将所有服务传入 ConsoleApplication，启动应用
+    ConsoleApplication app = new ConsoleApplication(playerService, courtService, reservationService, matchService);
+    app.start();
     }
 }
