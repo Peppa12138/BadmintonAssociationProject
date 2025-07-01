@@ -1,0 +1,112 @@
+# ====================================
+# 大黑山羽毛球运动协会项目 .gitignore
+# ====================================
+
+# 环境配置文件 - 包含敏感数据库信息
+.env
+config.properties
+
+# Java 编译文件
+*.class
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# 编译输出目录
+classes/
+target/
+build/
+out/
+bin/
+
+# IDE 文件
+# Eclipse
+.project
+.classpath
+.settings/
+*.launch
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# 日志文件
+*.log
+logs/
+
+# 数据库备份文件
+*.sql.backup
+*.db
+
+# 操作系统生成的文件
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*.swo
+*~.nib
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# Gradle
+.gradle
+/build/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+
+# 包管理工具缓存
+.m2/
+.gradle/
+
+# 应用程序特定文件
+# 测试数据
+test-data/
+sample-data/
+
+# 文档生成文件
+javadoc/
+docs/generated/
+
+# 其他
+*.bak
+*.orig
