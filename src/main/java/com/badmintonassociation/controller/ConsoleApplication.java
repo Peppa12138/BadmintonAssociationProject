@@ -1,18 +1,30 @@
 package com.badmintonassociation.controller;
 
-import com.badmintonassociation.service.PlayerService;
-import com.badmintonassociation.service.CourtService;
-import com.badmintonassociation.service.ReservationService;
-import com.badmintonassociation.service.MatchService;
-import com.badmintonassociation.dao.PlayerDAO;
-import com.badmintonassociation.dao.PlayerMatchDAO;
-import com.badmintonassociation.dao.CourtDAO;
-import com.badmintonassociation.dao.ReservationDAO;
-import com.badmintonassociation.model.Reservation;
-import com.badmintonassociation.dao.MatchDAO;
-import com.badmintonassociation.dao.MatchResultDAO;
-import com.badmintonassociation.util.DatabaseConnection;
-import com.badmintonassociation.model.MatchResult;
+// 服务
+import com.badmintonassociation.service.PlayerService;// 选手业务逻辑服务
+import com.badmintonassociation.service.CourtService;// 场地业务逻辑服务
+import com.badmintonassociation.service.ReservationService;//预约业务逻辑服务
+import com.badmintonassociation.service.MatchService;// 比赛业务逻辑服务
+
+
+// 数据访问对象
+import com.badmintonassociation.dao.PlayerDAO;// 选手数据访问对象
+import com.badmintonassociation.dao.PlayerMatchDAO; // 选手比赛数据访问对象
+import com.badmintonassociation.dao.CourtDAO;// 场地数据访问对象
+import com.badmintonassociation.dao.ReservationDAO;// 预约数据访问对象
+import com.badmintonassociation.dao.MatchDAO;// 比赛数据访问对象
+import com.badmintonassociation.dao.MatchResultDAO;// 比赛结果数据访问对象
+
+
+// 模型
+import com.badmintonassociation.model.MatchResult;// 比赛结果模型
+import com.badmintonassociation.model.Reservation;// 预约模型
+
+// 工具
+import com.badmintonassociation.util.DatabaseConnection;// 数据库连接工具
+
+
+// Java 标准库类
 import java.util.List;
 import java.util.Scanner;
 import java.sql.Connection;
@@ -23,6 +35,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+
+
+
 
 public class ConsoleApplication {
 
@@ -62,7 +77,9 @@ public class ConsoleApplication {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("==== 羽毛球管理系统 ====");
+            System.out.println("=======================");
+            System.out.println("║    羽毛球管理系统   ║");
+            System.out.println("=======================");
             System.out.println("1. 查看所有选手");
             System.out.println("2. 查看所有场地");
             System.out.println("3. 预定场地");
@@ -98,14 +115,19 @@ public class ConsoleApplication {
         }
     }
 
+    // 1
     private void listAllPlayers() {
         playerService.getAllPlayers().forEach(System.out::println);
     }
 
+
+    // 2
     private void listAllCourts() {
         courtService.getAllCourts().forEach(System.out::println);
     }
 
+
+    // 3  场地预约
     private void reserveACourt(Scanner scanner) {
         System.out.println("请输入您的用户ID:");
         int playerId = scanner.nextInt();

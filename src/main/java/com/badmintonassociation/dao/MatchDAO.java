@@ -13,7 +13,7 @@ public class MatchDAO {
         this.connection = connection;
     }
 
-    // Get all matches
+    // 查询所有比赛
     public List<Match> getAllMatches() throws SQLException {
         String query = "SELECT * FROM Matches";
         Statement statement = connection.createStatement();
@@ -31,7 +31,7 @@ public class MatchDAO {
         return matches;
     }
 
-    // Add this method to MatchResultDAO
+    // 查询比赛结果 
     public List<MatchResult> getResultsByMatchId(int matchId) throws SQLException {
         String query = "SELECT * FROM MatchResults WHERE match_id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -52,7 +52,7 @@ public class MatchDAO {
         return matchResults;
     }
     
-    // Create a new match record
+    // 创建比赛记录1
     public void createMatch(Match match) throws SQLException {
         String query = "INSERT INTO Matches (date, start_time, end_time) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -61,7 +61,10 @@ public class MatchDAO {
         preparedStatement.setTimestamp(3, match.getEndTime()); // Updated to setTimestamp
         preparedStatement.executeUpdate();
     }
+
+
     
+    // 查询指定时间段内的比赛
     public int selectFreeCourt(Time startTime, Time endTime) throws SQLException {
         String query = "SELECT court_id FROM Courts WHERE court_id NOT IN "
                 + "(SELECT court_id FROM Matches WHERE (start_time < ? AND end_time > ?)) LIMIT 1";
@@ -78,6 +81,9 @@ public class MatchDAO {
         throw new SQLException("No court available.");
     }
 
+
+
+    // 创建比赛记录2(重载)
     public int createMatch(Date date, Time startTime, Time endTime, int courtId) throws SQLException {
         String query = "INSERT INTO Matches (date, start_time, end_time, court_id) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query,
