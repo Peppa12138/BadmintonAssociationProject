@@ -1,18 +1,36 @@
 package com.badmintonassociation.model;
 
-public class PlayerMatch {
+public class PlayerMatch extends BaseEntity {
     private int playerMatchId;
     private int matchId;
     private int playerId;
 
     // Constructor
     public PlayerMatch() {
+        super();
     }
 
     public PlayerMatch(int playerMatchId, int matchId, int playerId) {
+        super();
         this.playerMatchId = playerMatchId;
         this.matchId = matchId;
         this.playerId = playerId;
+    }
+
+    // 实现抽象方法
+    @Override
+    public int getId() {
+        return playerMatchId;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.playerMatchId = id;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "参赛记录-" + playerMatchId + " (选手:" + playerId + "-比赛:" + matchId + ")";
     }
 
     // Getters and Setters

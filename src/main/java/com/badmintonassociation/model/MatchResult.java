@@ -1,6 +1,6 @@
 package com.badmintonassociation.model;
 
-public class MatchResult {
+public class MatchResult extends BaseEntity {
     private int resultId;
     private int matchId;
     private int playerId;
@@ -10,15 +10,33 @@ public class MatchResult {
 
     // Constructor
     public MatchResult() {
+        super();
     }
 
     public MatchResult(int resultId, int matchId, int playerId, int rankId, int score, boolean recordBroken) {
+        super();
         this.resultId = resultId;
         this.matchId = matchId;
         this.playerId = playerId;
         this.rankId = rankId;
         this.score = score;
         this.recordBroken = recordBroken;
+    }
+
+    // 实现抽象方法
+    @Override
+    public int getId() {
+        return resultId;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.resultId = id;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "成绩-" + resultId + " (排名:" + rankId + ")";
     }
 
     // Getters and Setters

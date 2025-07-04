@@ -2,7 +2,7 @@ package com.badmintonassociation.model;
 
 import java.sql.Timestamp;
 
-public class Reservation {
+public class Reservation extends BaseEntity {
     private int reservationId;
     private int courtId;
     private Integer playerId; // Can be null
@@ -12,16 +12,35 @@ public class Reservation {
 
     // Constructor
     public Reservation() {
+        super();
     }
 
     public Reservation(int reservationId, int courtId, Integer playerId, Integer matchId, Timestamp startTime,
             Timestamp endTime) {
+        super();
         this.reservationId = reservationId;
         this.courtId = courtId;
         this.playerId = playerId;
         this.matchId = matchId;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    // 实现抽象方法
+    @Override
+    public int getId() {
+        return reservationId;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.reservationId = id;
+    }
+
+    @Override
+    public String getDisplayName() {
+        String type = (playerId != null) ? "个人预约" : "比赛预约";
+        return "预约-" + reservationId + " (" + type + ")";
     }
 
     // Getters and Setters
