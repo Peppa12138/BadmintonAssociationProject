@@ -18,17 +18,7 @@ public class ReservationService extends BaseService<Reservation, ReservationDAO>
         this.matchDAO = matchDAO;
     }
 
-    /**
-     * Reserves a court for either training or a match.
-     *
-     * @param courtId   The ID of the court being reserved.
-     * @param startTime The desired start time for the reservation.
-     * @param endTime   The desired end time for the reservation.
-     * @param playerId  The ID of the player reserving the court (null if reserved
-     *                  for a match).
-     * @param matchId   The ID of the match (null if reserved by a player).
-     * @return true if the reservation was successful, false otherwise.
-     */
+    // 预约场地
     public boolean reserveCourt(int courtId, Timestamp startTime, Timestamp endTime, Integer playerId,
             Integer matchId) {
         return executeBooleanOperation(() -> {
@@ -47,16 +37,7 @@ public class ReservationService extends BaseService<Reservation, ReservationDAO>
         });
     }
 
-    /**
-     * Schedules a new match and reserves the necessary court.
-     *
-     * @param matchId   The ID of the match to be scheduled.
-     * @param courtId   The ID of the court where the match will occur.
-     * @param date      The date of the match.
-     * @param startTime The starting time of the match.
-     * @param endTime   The ending time of the match.
-     * @return true if the match was successfully scheduled, false otherwise.
-     */
+    // 安排比赛
     public boolean scheduleMatch(int matchId, int courtId, Timestamp startTime, Timestamp endTime) {
         return executeBooleanOperation(() -> {
             // First check if court is available
@@ -82,7 +63,7 @@ public class ReservationService extends BaseService<Reservation, ReservationDAO>
         });
     }
     
-    // Check if court is available based on start time only
+    
     public boolean isStartTimeAvailable(int courtId, Timestamp startTime) {
         return executeWithExceptionHandling(
             () -> dao.isStartTimeAvailable(courtId, startTime),

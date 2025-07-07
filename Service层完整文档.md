@@ -68,6 +68,7 @@ protected final Logger logger = Logger.getLogger(this.getClass().getName());
 ```
 
 #### 3. 函数式接口
+
 ```java
 @FunctionalInterface
 protected interface SQLOperation {
@@ -135,6 +136,7 @@ public PlayerService(PlayerDAO playerDAO) {
 ### 核心业务方法 🆕
 
 #### 1. 获取所有运动员
+
 ```java
 public List<Player> getAllPlayers() {
     return executeWithExceptionHandling(
@@ -149,6 +151,7 @@ public List<Player> getAllPlayers() {
 - **异常处理**: 自动处理SQLException并记录日志
 
 #### 2. 创建新运动员
+
 ```java
 public boolean createPlayer(Player player) {
     return executeBooleanOperation(
@@ -162,6 +165,7 @@ public boolean createPlayer(Player player) {
 - **优化**: 使用BaseService的统一异常处理，自动日志记录
 
 #### 3. 获取运动员最近比赛结果 🆕
+
 ```java
 public List<MatchResult> getLatestPlayerResults(int playerId, int limit) {
     return executeWithExceptionHandling(
@@ -181,6 +185,7 @@ public List<MatchResult> getLatestPlayerResults(int playerId, int limit) {
   - 统一的异常处理和结果转换
 
 #### 3. 获取运动员最近成绩
+
 ```java
 public List<MatchResult> getLatestPlayerResults(int playerId, int limit)
 ```
@@ -245,6 +250,7 @@ public CourtService(CourtDAO courtDAO) {
 ### 核心业务方法 🆕
 
 #### 1. 获取所有场地
+
 ```java
 public List<Court> getAllCourts() {
     return executeWithExceptionHandling(
@@ -330,6 +336,7 @@ public ReservationService(ReservationDAO reservationDAO, MatchDAO matchDAO)
 ### 核心业务方法
 
 #### 1. 预约场地 ⭐
+
 ```java
 public boolean reserveCourt(int courtId, Timestamp startTime, Timestamp endTime, Integer playerId, Integer matchId)
 ```
@@ -347,6 +354,7 @@ public boolean reserveCourt(int courtId, Timestamp startTime, Timestamp endTime,
   3. 确保playerId和matchId至少一个不为null
 
 #### 2. 安排比赛 ⭐
+
 ```java
 public boolean scheduleMatch(int matchId, int courtId, Timestamp startTime, Timestamp endTime)
 ```

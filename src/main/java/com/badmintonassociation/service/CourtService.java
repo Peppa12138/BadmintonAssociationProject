@@ -11,6 +11,7 @@ public class CourtService extends BaseService<Court, CourtDAO> {
         super(courtDAO);
     }
 
+    // 获取所有场地
     public List<Court> getAllCourts() {
         return executeWithExceptionHandling(
             () -> dao.getAllCourts(),

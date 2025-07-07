@@ -11,6 +11,7 @@ public class PlayerService extends BaseService<Player, PlayerDAO> {
         super(playerDAO);
     }
 
+    // 获取所有运动员
     public List<Player> getAllPlayers() {
         return executeWithExceptionHandling(
             () -> dao.getAllPlayers(),
@@ -18,12 +19,16 @@ public class PlayerService extends BaseService<Player, PlayerDAO> {
         );
     }
 
+
+    // 创建新运动员
     public boolean createPlayer(Player player) {
         return executeBooleanOperation(
             () -> dao.createPlayer(player)
         );
     }
     
+
+    // 获取运动员最近成绩
     public List<MatchResult> getLatestPlayerResults(int playerId, int limit) {
         return executeWithExceptionHandling(
             () -> dao.getLatestPlayerResults(playerId, limit),

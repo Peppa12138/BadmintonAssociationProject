@@ -1,3 +1,13 @@
+/*
+ * @Author: ourEDA MaMing
+ * @Date: 2025-07-03 16:48:40
+ * @LastEditors: ourEDA MaMing
+ * @LastEditTime: 2025-07-07 16:33:41
+ * @FilePath: \BadmintonAssociationProject\src\main\java\com\badmintonassociation\service\MatchService.java
+ * @Description: Hello?Hello!
+ * 
+ * Copyright (c) 2025 by FanZDStar , All Rights Reserved. 
+ */
 package com.badmintonassociation.service;
 
 import com.badmintonassociation.dao.MatchDAO;
@@ -21,6 +31,7 @@ public class MatchService extends BaseService<Match, MatchDAO> {
     private PlayerMatchDAO playerMatchDAO;
     private MatchResultDAO matchResultDAO;
 
+    // 构造函数
     public MatchService(MatchDAO matchDAO, PlayerDAO playerDAO, PlayerMatchDAO playerMatchDAO,MatchResultDAO matchResultDAO) {
         super(matchDAO);
         this.playerDAO = playerDAO;
@@ -28,25 +39,14 @@ public class MatchService extends BaseService<Match, MatchDAO> {
         this.matchResultDAO = matchResultDAO;
     }
 
-    /**
-     * Records the result for a given match.
-     *
-     * @param matchResult The result of a match including rank, score, and record
-     *                    status.
-     * @return true if the match result was successfully recorded, false otherwise.
-     */
+    // 比赛结果记录
     public boolean recordMatchResult(MatchResult matchResult) {
         return executeBooleanOperation(
             () -> matchResultDAO.createMatchResult(matchResult)
         );
     }
 
-    /**
-     * Retrieves all results from a given match.
-     *
-     * @param matchId The ID of the match whose results are to be retrieved.
-     * @return A list of MatchResult objects containing the result data.
-     */
+    // 获取比赛结果
     public List<MatchResult> getMatchResults(int matchId) {
         return executeWithExceptionHandling(
             () -> matchResultDAO.getResultsByMatchId(matchId),
@@ -54,16 +54,9 @@ public class MatchService extends BaseService<Match, MatchDAO> {
         );
     }
 
-    // public boolean createMatch(LocalDate date, LocalTime startTime, LocalTime endTime) {
-    //     try {
-    //         matchDAO.createMatch(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTime));
-    //         return true;
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //         return false;
-    //     }
-    // }
 
+
+    // 比赛创建流程
     public boolean createMatchWithPlayers(LocalDate date, LocalTime startTime, LocalTime endTime) {
         return executeBooleanOperation(() -> {
             // Step 1: Select a free court
