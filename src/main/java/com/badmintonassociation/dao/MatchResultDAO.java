@@ -6,14 +6,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchResultDAO {
+public class MatchResultDAO implements IBaseDAO<MatchResult> {
     private Connection connection;
 
     public MatchResultDAO(Connection connection) {
         this.connection = connection;
     }
 
-    // Get all match results
+    // Get all match results - 实现 IBaseDAO 接口
+    @Override
+    public List<MatchResult> getAll() throws SQLException {
+        return getAllMatchResults();
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public List<MatchResult> getAllMatchResults() throws SQLException {
         String query = "SELECT * FROM MatchResults";
         Statement statement = connection.createStatement();
@@ -33,7 +39,13 @@ public class MatchResultDAO {
         return matchResults;
     }
 
-    // Create a new match result record
+    // Create a new match result record - 实现 IBaseDAO 接口
+    @Override
+    public void create(MatchResult matchResult) throws SQLException {
+        createMatchResult(matchResult);
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public void createMatchResult(MatchResult matchResult) throws SQLException {
         String query = "INSERT INTO MatchResults (match_id, player_id, rank_id, score, record_broken) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

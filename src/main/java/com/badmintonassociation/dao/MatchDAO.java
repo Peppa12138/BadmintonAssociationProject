@@ -6,14 +6,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchDAO {
+public class MatchDAO implements IBaseDAO<Match> {
     private Connection connection;
 
     public MatchDAO(Connection connection) {
         this.connection = connection;
     }
 
-    // 查询所有比赛
+    // 查询所有比赛 - 实现 IBaseDAO 接口
+    @Override
+    public List<Match> getAll() throws SQLException {
+        return getAllMatches();
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public List<Match> getAllMatches() throws SQLException {
         String query = "SELECT * FROM Matches";
         Statement statement = connection.createStatement();
@@ -52,7 +58,13 @@ public class MatchDAO {
         return matchResults;
     }
     
-    // 创建比赛记录1
+    // 创建比赛记录1 - 实现 IBaseDAO 接口
+    @Override
+    public void create(Match match) throws SQLException {
+        createMatch(match);
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public void createMatch(Match match) throws SQLException {
         String query = "INSERT INTO Matches (date, start_time, end_time) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

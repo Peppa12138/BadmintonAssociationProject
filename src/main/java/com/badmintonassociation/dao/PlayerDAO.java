@@ -6,14 +6,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerDAO {
+public class PlayerDAO implements IBaseDAO<Player> {
     private Connection connection;
 
     public PlayerDAO(Connection connection) {
         this.connection = connection;
     }
 
-    // Get all players
+    // Get all players - 实现 IBaseDAO 接口
+    @Override
+    public List<Player> getAll() throws SQLException {
+        return getAllPlayers();
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public List<Player> getAllPlayers() throws SQLException {
         String query = "SELECT * FROM Players";
         Statement statement = connection.createStatement();
@@ -31,7 +37,13 @@ public class PlayerDAO {
         return players;
     }
 
-    // Create a new player record
+    // Create a new player record - 实现 IBaseDAO 接口
+    @Override
+    public void create(Player player) throws SQLException {
+        createPlayer(player);
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public void createPlayer(Player player) throws SQLException {
         String query = "INSERT INTO Players (name, gender, level) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);

@@ -7,14 +7,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationDAO {
+public class ReservationDAO implements IBaseDAO<Reservation> {
     private Connection connection;
 
     public ReservationDAO(Connection connection) {
         this.connection = connection;
     }
 
-    // Get all reservations
+    // Get all reservations - 实现 IBaseDAO 接口
+    @Override
+    public List<Reservation> getAll() throws SQLException {
+        return getAllReservations();
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public List<Reservation> getAllReservations() throws SQLException {
         String query = "SELECT * FROM Reservations";
         Statement statement = connection.createStatement();
@@ -67,7 +73,13 @@ public class ReservationDAO {
         return count == 0;
     }
 
-    // Reserve court for training or match
+    // Reserve court for training or match - 实现 IBaseDAO 接口
+    @Override
+    public void create(Reservation reservation) throws SQLException {
+        createReservation(reservation);
+    }
+    
+    // 原有方法保持不变，供向后兼容
     public void createReservation(Reservation reservation) throws SQLException {
         String query = "INSERT INTO Reservations (court_id, player_id, match_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
