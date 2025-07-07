@@ -10,12 +10,11 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ReservationService {
-    private ReservationDAO reservationDAO;
+public class ReservationService extends BaseService<Reservation, ReservationDAO> {
     private MatchDAO matchDAO;
 
     public ReservationService(ReservationDAO reservationDAO, MatchDAO matchDAO) {
-        this.reservationDAO = reservationDAO;
+        super(reservationDAO);
         this.matchDAO = matchDAO;
     }
 
@@ -32,8 +31,8 @@ public class ReservationService {
      */
     public boolean reserveCourt(int courtId, Timestamp startTime, Timestamp endTime, Integer playerId,
             Integer matchId) {
-        try {
-            if (reservationDAO.isCourtAvailable(courtId, startTime, endTime)) {
+        return executeBooleanOperation(() -> {
+            if (dao.isCourtAvailable(courtId, startTime, endTime)) {
                 Reservation reservation = new Reservation();
                 reservation.setCourtId(courtId);
                 reservation.setStartTime(startTime);
@@ -41,13 +40,11 @@ public class ReservationService {
                 reservation.setPlayerId(playerId);
                 reservation.setMatchId(matchId);
 
-                reservationDAO.createReservation(reservation);
-                return true;
+                dao.createReservation(reservation);
+            } else {
+                throw new SQLException("场地在指定时间不可用");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        });
     }
 
     /**
@@ -61,69 +58,68 @@ public class ReservationService {
      * @return true if the match was successfully scheduled, false otherwise.
      */
     public boolean scheduleMatch(int matchId, int courtId, Timestamp startTime, Timestamp endTime) {
-        try {
+        return executeBooleanOperation(() -> {
+            // First check if court is available
+            if (!dao.isCourtAvailable(courtId, startTime, endTime)) {
+                throw new SQLException("场地在指定时间不可用");
+            }
+            
+            // Create match
             Match match = new Match();
             match.setMatchId(matchId);
             match.setStartTime(startTime);
             match.setEndTime(endTime);
-
-            // Check availability and create reservation
-            if (reserveCourt(courtId, startTime, endTime, null, matchId)) {
-                matchDAO.createMatch(match);
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+            matchDAO.createMatch(match);
+            
+            // Create reservation
+            Reservation reservation = new Reservation();
+            reservation.setCourtId(courtId);
+            reservation.setStartTime(startTime);
+            reservation.setEndTime(endTime);
+            reservation.setPlayerId(null);
+            reservation.setMatchId(matchId);
+            dao.createReservation(reservation);
+        });
     }
     
     // Check if court is available based on start time only
     public boolean isStartTimeAvailable(int courtId, Timestamp startTime) {
-        try {
-            return reservationDAO.isStartTimeAvailable(courtId, startTime);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return executeWithExceptionHandling(
+            () -> dao.isStartTimeAvailable(courtId, startTime),
+            false
+        );
     }
     
     public boolean isEndTimeAvailable(int courtId, Timestamp endTime) {
-        try {
-            return reservationDAO.isEndTimeAvailable(courtId, endTime);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return executeWithExceptionHandling(
+            () -> dao.isEndTimeAvailable(courtId, endTime),
+            false
+        );
     }
 
     // Check if court is available
     public boolean isCourtAvailable(int courtId, Timestamp startTime, Timestamp endTime) {
-        try {
-            return reservationDAO.isCourtAvailable(courtId, startTime, endTime);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return executeWithExceptionHandling(
+            () -> dao.isCourtAvailable(courtId, startTime, endTime),
+            false
+        );
     }
 
     public List<Reservation> getRecentReservations(int courtId) {
-        try {
-            return reservationDAO.getRecentReservations(courtId, 10);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return executeWithExceptionHandling(
+            () -> dao.getRecentReservations(courtId, 10),
+            null
+        );
     }
     
     public boolean canPlayerReserveOnDate(int playerId, LocalDate date) {
-        try {
-            int reservationCount = reservationDAO.getReservationCountForPlayerOnDate(playerId, date);
-            return reservationCount < 2;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return executeWithExceptionHandling(
+            () -> {
+                int reservationCount = dao.getReservationCountForPlayerOnDate(playerId, date);
+                return reservationCount < 2;
+            },
+            false
+        );
     }
 
     // Additional business logic methods...

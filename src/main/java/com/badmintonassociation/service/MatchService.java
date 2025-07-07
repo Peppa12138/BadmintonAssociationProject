@@ -4,6 +4,7 @@ import com.badmintonassociation.dao.MatchDAO;
 import com.badmintonassociation.dao.MatchResultDAO;
 import com.badmintonassociation.dao.PlayerDAO;
 import com.badmintonassociation.dao.PlayerMatchDAO;
+import com.badmintonassociation.model.Match;
 import com.badmintonassociation.model.MatchResult;
 // import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -15,14 +16,13 @@ import java.util.List;
 import java.sql.Date;
 import java.util.Random;
 
-public class MatchService {
-    private MatchDAO matchDAO;
+public class MatchService extends BaseService<Match, MatchDAO> {
     private PlayerDAO playerDAO;
     private PlayerMatchDAO playerMatchDAO;
     private MatchResultDAO matchResultDAO;
 
     public MatchService(MatchDAO matchDAO, PlayerDAO playerDAO, PlayerMatchDAO playerMatchDAO,MatchResultDAO matchResultDAO) {
-        this.matchDAO = matchDAO;
+        super(matchDAO);
         this.playerDAO = playerDAO;
         this.playerMatchDAO = playerMatchDAO;
         this.matchResultDAO = matchResultDAO;
@@ -36,13 +36,9 @@ public class MatchService {
      * @return true if the match result was successfully recorded, false otherwise.
      */
     public boolean recordMatchResult(MatchResult matchResult) {
-        try {
-            matchResultDAO.createMatchResult(matchResult);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return executeBooleanOperation(
+            () -> matchResultDAO.createMatchResult(matchResult)
+        );
     }
 
     /**
@@ -52,12 +48,10 @@ public class MatchService {
      * @return A list of MatchResult objects containing the result data.
      */
     public List<MatchResult> getMatchResults(int matchId) {
-        try {
-            return matchResultDAO.getResultsByMatchId(matchId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return executeWithExceptionHandling(
+            () -> matchResultDAO.getResultsByMatchId(matchId),
+            null
+        );
     }
 
     // public boolean createMatch(LocalDate date, LocalTime startTime, LocalTime endTime) {
@@ -71,19 +65,18 @@ public class MatchService {
     // }
 
     public boolean createMatchWithPlayers(LocalDate date, LocalTime startTime, LocalTime endTime) {
-        try {
+        return executeBooleanOperation(() -> {
             // Step 1: Select a free court
-            int courtId = matchDAO.selectFreeCourt(Time.valueOf(startTime), Time.valueOf(endTime));
+            int courtId = dao.selectFreeCourt(Time.valueOf(startTime), Time.valueOf(endTime));
 
             // Step 2: Create match record
-            int matchId = matchDAO.createMatch(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTime),courtId);
+            int matchId = dao.createMatch(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTime),courtId);
 
             // Step 3: Select players for the match
             List<Integer> eligiblePlayers = playerDAO.getEligiblePlayers(Time.valueOf(startTime),
                     Time.valueOf(endTime));
             if (eligiblePlayers.size() < 10) {
-                System.out.println("没有足够的选手参与比赛。");
-                return false;
+                throw new SQLException("没有足够的选手参与比赛。");
             }
 
             List<Integer> selectedPlayers = selectRandomPlayers(eligiblePlayers, 10);
@@ -103,13 +96,7 @@ public class MatchService {
 
                 matchResultDAO.insertMatchResult(matchId, playerId, rankId, score, recordBroken);
             }
-
-            return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        });
     }
 
     private List<Integer> selectRandomPlayers(List<Integer> eligiblePlayers, int count) {

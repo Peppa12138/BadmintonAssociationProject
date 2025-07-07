@@ -3,23 +3,19 @@ package com.badmintonassociation.service;
 import com.badmintonassociation.dao.CourtDAO;
 import com.badmintonassociation.model.Court;
 
-import java.sql.SQLException;
 import java.util.List;
 
-public class CourtService {
-    private CourtDAO courtDAO;
+public class CourtService extends BaseService<Court, CourtDAO> {
 
     public CourtService(CourtDAO courtDAO) {
-        this.courtDAO = courtDAO;
+        super(courtDAO);
     }
 
     public List<Court> getAllCourts() {
-        try {
-            return courtDAO.getAllCourts();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return executeWithExceptionHandling(
+            () -> dao.getAllCourts(),
+            null
+        );
     }
 
     // Additional methods...
