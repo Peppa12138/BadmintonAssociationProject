@@ -6,6 +6,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+/* 比赛结果数据访问
+ * - 查询所有比赛结果
+ * 提供比赛结果查询、创建等数据库操作方法，
+ * 支持比赛统计和分析系统的数据需求。
+ * 
+ *  @author guoYiFu
+ *  @since 2025-07-04
+ */
 public class MatchResultDAO implements IBaseDAO<MatchResult> {
     private Connection connection;
 
@@ -13,13 +23,11 @@ public class MatchResultDAO implements IBaseDAO<MatchResult> {
         this.connection = connection;
     }
 
-    // Get all match results - 实现 IBaseDAO 接口
+    // 查询所有比赛结果
     @Override
     public List<MatchResult> getAll() throws SQLException {
         return getAllMatchResults();
     }
-    
-    // 原有方法保持不变，供向后兼容
     public List<MatchResult> getAllMatchResults() throws SQLException {
         String query = "SELECT * FROM MatchResults";
         Statement statement = connection.createStatement();
@@ -39,13 +47,13 @@ public class MatchResultDAO implements IBaseDAO<MatchResult> {
         return matchResults;
     }
 
-    // Create a new match result record - 实现 IBaseDAO 接口
+    
+
+    // 创建新比赛结果
     @Override
     public void create(MatchResult matchResult) throws SQLException {
         createMatchResult(matchResult);
     }
-    
-    // 原有方法保持不变，供向后兼容
     public void createMatchResult(MatchResult matchResult) throws SQLException {
         String query = "INSERT INTO MatchResults (match_id, player_id, rank_id, score, record_broken) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -57,7 +65,9 @@ public class MatchResultDAO implements IBaseDAO<MatchResult> {
         preparedStatement.executeUpdate();
     }
 
-    // Get match results by match ID
+
+
+    // 按比赛ID查询结果
     public List<MatchResult> getResultsByMatchId(int matchId) throws SQLException {
         String query = "SELECT * FROM MatchResults WHERE match_id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -78,6 +88,9 @@ public class MatchResultDAO implements IBaseDAO<MatchResult> {
         return matchResults;
     }
 
+
+
+    // 批量插入比赛结果
     public void insertMatchResult(int matchId, int playerId, int rankId, int score, boolean recordBroken)
             throws SQLException {
         String query = "INSERT INTO MatchResults (match_id, player_id, rank_id, score, record_broken) VALUES (?, ?, ?, ?, ?)";
@@ -91,5 +104,5 @@ public class MatchResultDAO implements IBaseDAO<MatchResult> {
         }
     }
 
-    // Additional methods such as update, delete...
+    
 }

@@ -6,6 +6,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/* 选手数据访问
+ * - 查询所有选手信息
+ * - 创建新选手记录
+ * - 获取符合条件的选手列表
+ * - 查询选手历史比赛成绩
+ *  @author yuZhongShui
+ *  @since 2025-07-04
+ */
 public class PlayerDAO implements IBaseDAO<Player> {
     private Connection connection;
 
@@ -13,13 +22,11 @@ public class PlayerDAO implements IBaseDAO<Player> {
         this.connection = connection;
     }
 
-    // Get all players - 实现 IBaseDAO 接口
+
     @Override
     public List<Player> getAll() throws SQLException {
         return getAllPlayers();
     }
-    
-    // 原有方法保持不变，供向后兼容
     public List<Player> getAllPlayers() throws SQLException {
         String query = "SELECT * FROM Players";
         Statement statement = connection.createStatement();
@@ -37,13 +44,13 @@ public class PlayerDAO implements IBaseDAO<Player> {
         return players;
     }
 
-    // Create a new player record - 实现 IBaseDAO 接口
+
+
+
     @Override
     public void create(Player player) throws SQLException {
         createPlayer(player);
     }
-    
-    // 原有方法保持不变，供向后兼容
     public void createPlayer(Player player) throws SQLException {
         String query = "INSERT INTO Players (name, gender, level) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -52,6 +59,9 @@ public class PlayerDAO implements IBaseDAO<Player> {
         preparedStatement.setString(3, player.getLevel());
         preparedStatement.executeUpdate();
     }
+
+
+
 
     public List<Integer> getEligiblePlayers(Time startTime, Time endTime) throws SQLException {
         String query = "SELECT player_id FROM Players WHERE player_id NOT IN "
@@ -71,6 +81,9 @@ public class PlayerDAO implements IBaseDAO<Player> {
         }
     }
     
+
+
+
     public List<MatchResult> getLatestPlayerResults(int playerId, int limit) throws SQLException {
         String query = "SELECT mr.match_id, mr.rank_id, mr.score, mr.record_broken "
                 + "FROM MatchResults mr "
@@ -96,5 +109,5 @@ public class PlayerDAO implements IBaseDAO<Player> {
             }
         }
     }
-    // Additional methods such as create, update, delete...
+
 }

@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * 数据库连接工具类
- * 提供数据库连接的创建和管理功能
+ * 数据库连接管理器
+ * 该类负责数据库连接的创建和管理，提供统一的数据库访问入口。
+ * 使用 JDBC 技术连接 MySQL 数据库，支持通过环境变量配置数据库连接参数。
+ * @author yuZhongShui
+ * @since 2025-07-03
  */
 public class DatabaseConnection {
     

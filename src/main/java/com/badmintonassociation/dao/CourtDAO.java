@@ -6,6 +6,19 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 场地数据访问
+ * 该类负责场地信息的数据库访问操作。
+ * 提供场地查询、创建等数据库操作方法，支持场地管理和预订系统的数据需求。
+ * - 查询所有可用场地信息
+ * - 创建新的场地记录 (预留接口)
+ * - 支持场地状态查询和管理
+ * - 为场地预订系统提供数据支持
+ * @author huJunYang
+ * @since 2025-07-03
+ */
+
+
 public class CourtDAO implements IBaseDAO<Court> {
     private Connection connection;
 
@@ -36,13 +49,8 @@ public class CourtDAO implements IBaseDAO<Court> {
         return courts;
     }
 
-    // Create court - 实现 IBaseDAO 接口
     @Override
     public void create(Court court) throws SQLException {
-        // 可以在这里实现创建场地的逻辑
-        // 目前为空实现，等待具体的业务需求
         throw new UnsupportedOperationException("Create court not implemented yet");
     }
-
-    // Additional methods such as create, update, delete...
 }

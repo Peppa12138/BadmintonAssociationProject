@@ -1,5 +1,15 @@
 package com.badmintonassociation.model;
 
+/**
+ * 羽毛球选手实体类
+ * 该类表示羽毛球运动协会的注册选手信息，对应数据库中的 Players 表。
+ * 包含选手的个人基本信息和技术水平等级，用于选手管理、比赛组织和成绩记录。
+ * 继承自 BaseEntity，具备统一的实体对象标识能力。
+ * 
+ * @author guoYiFu
+ * @since 2025-07-03
+
+ */
 public class Player extends BaseEntity {
     private int playerId;
     private String name;

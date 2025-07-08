@@ -1,13 +1,3 @@
-/*
- * @Author: ourEDA MaMing
- * @Date: 2025-07-03 16:48:40
- * @LastEditors: ourEDA MaMing
- * @LastEditTime: 2025-07-07 16:33:41
- * @FilePath: \BadmintonAssociationProject\src\main\java\com\badmintonassociation\service\MatchService.java
- * @Description: Hello?Hello!
- * 
- * Copyright (c) 2025 by FanZDStar , All Rights Reserved. 
- */
 package com.badmintonassociation.service;
 
 import com.badmintonassociation.dao.MatchDAO;
@@ -16,7 +6,6 @@ import com.badmintonassociation.dao.PlayerDAO;
 import com.badmintonassociation.dao.PlayerMatchDAO;
 import com.badmintonassociation.model.Match;
 import com.badmintonassociation.model.MatchResult;
-// import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.sql.SQLException;
@@ -25,6 +14,17 @@ import java.util.Collections;
 import java.util.List;
 import java.sql.Date;
 import java.util.Random;
+
+
+/**
+ * 比赛业务服务类
+ * 该类负责比赛相关的业务逻辑处理，作为控制器层和数据访问层之间的桥梁。
+ * 继承自 BaseService，具备统一的异常处理和日志记录能力。
+ * 提供比赛创建、选手分配、成绩记录等业务功能，支持自动化比赛调度和管理系统。
+ * @author guoYiFu
+ * @since 2025-07-03
+ */
+
 
 public class MatchService extends BaseService<Match, MatchDAO> {
     private PlayerDAO playerDAO;

@@ -6,6 +6,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 环境变量加载器工具类
+ * 
+ * <p>功能描述：
+ * 该类负责从 .env 配置文件中加载环境变量，支持数据库连接配置等敏感信息的外部化管理。
+ * 采用单例模式设计，在类加载时自动读取配置文件，提供线程安全的配置访问。
+ * @author yuZhongShui
+ * @since 2025-07-03
+
+ */
 public class EnvLoader {
     private static final Map<String, String> envVars = new HashMap<>();
     

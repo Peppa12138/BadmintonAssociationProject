@@ -6,6 +6,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*比赛数据访问
+ * 该类负责比赛信息的数据库访问操作。
+ * 提供比赛查询、创建等数据库操作方法，支持比赛管理和统计系统的数据需求。
+ * - 查询所有比赛信息
+ * - 创建新的比赛记录 (预留接口)
+ * - 支持比赛状态查询和管理
+ * - 为比赛统计系统提供数据支持
+ *  @author guoYiFu
+ *  @since 2025-07-04
+ */
+
+
 public class MatchDAO implements IBaseDAO<Match> {
     private Connection connection;
 
@@ -58,13 +70,13 @@ public class MatchDAO implements IBaseDAO<Match> {
         return matchResults;
     }
     
-    // 创建比赛记录1 - 实现 IBaseDAO 接口
+
+
+    // 创建新比赛
     @Override
     public void create(Match match) throws SQLException {
         createMatch(match);
     }
-    
-    // 原有方法保持不变，供向后兼容
     public void createMatch(Match match) throws SQLException {
         String query = "INSERT INTO Matches (date, start_time, end_time) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -76,7 +88,8 @@ public class MatchDAO implements IBaseDAO<Match> {
 
 
     
-    // 查询指定时间段内的比赛
+
+    // 查找空闲场地
     public int selectFreeCourt(Time startTime, Time endTime) throws SQLException {
         String query = "SELECT court_id FROM Courts WHERE court_id NOT IN "
                 + "(SELECT court_id FROM Matches WHERE (start_time < ? AND end_time > ?)) LIMIT 1";
@@ -95,7 +108,7 @@ public class MatchDAO implements IBaseDAO<Match> {
 
 
 
-    // 创建比赛记录2(重载)
+    // 创建比赛记录
     public int createMatch(Date date, Time startTime, Time endTime, int courtId) throws SQLException {
         String query = "INSERT INTO Matches (date, start_time, end_time, court_id) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query,
@@ -115,5 +128,5 @@ public class MatchDAO implements IBaseDAO<Match> {
         throw new SQLException("Creating match failed, no ID obtained.");
     }
 
-    // Additional methods such as create, update, delete...
+    
 }

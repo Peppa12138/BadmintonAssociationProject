@@ -2,16 +2,24 @@ package com.badmintonassociation.model;
 
 /**
  * 基础实体抽象类
- * 提供所有实体类的通用标识方法
+ * 该抽象类为所有数据库实体类提供通用的基础功能和标准规范。
+ * 定义了实体对象的核心标识方法，确保所有子实体类都具备统一的标识能力。
+ * 作为实体继承体系的根类，为 ORM 映射和对象管理提供基础支持。
+ * @author huJunYang
+ * @since 2025-07-03
  */
+
+
+
 public abstract class BaseEntity {
     
-    // 抽象方法 - 子类必须实现
+    
     public abstract int getId();
     public abstract void setId(int id);
     public abstract String getDisplayName();
     
-    // 重写 equals 和 hashCode
+    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

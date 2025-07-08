@@ -2,11 +2,24 @@ package com.badmintonassociation.model;
 
 import java.sql.Timestamp;
 
+
+/**
+ * 场地预订实体类
+ * 该类表示羽毛球场地的预订信息，对应数据库中的 Reservations 表。
+ * 支持两种预订类型：个人训练预订和比赛场地预订。
+ * 包含场地分配、时间安排和预订者信息，用于场地资源管理和调度系统。
+ * 继承自 BaseEntity，具备统一的实体对象标识能力。
+ * @author guoYiFu
+ * @since 2025-07-03
+ */
+
+
+
 public class Reservation extends BaseEntity {
     private int reservationId;
     private int courtId;
-    private Integer playerId; // Can be null
-    private Integer matchId; // Can be null
+    private Integer playerId; 
+    private Integer matchId; 
     private Timestamp startTime;
     private Timestamp endTime;
 

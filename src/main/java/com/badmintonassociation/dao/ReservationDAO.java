@@ -7,6 +7,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/* 场地预订数据访问
+ * - 查询所有预订记录
+ * - 创建新的场地预订
+ * - 检查场地可用性和时间冲突
+ * - 统计选手预订次数和历史记录
+ *  @author huJunYang
+ *  @since 2025-07-03
+ */
+
+
+
 public class ReservationDAO implements IBaseDAO<Reservation> {
     private Connection connection;
 

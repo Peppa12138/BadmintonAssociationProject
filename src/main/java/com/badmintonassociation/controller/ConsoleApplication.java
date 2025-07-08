@@ -1,3 +1,24 @@
+
+/**
+ * 羽毛球协会管理系统控制台应用程序
+ * 
+ * 该类是整个羽毛球协会管理系统的控制台入口和用户交互界面。
+ * 提供基于命令行的用户界面，支持选手管理、场地预订、比赛安排等核心功能。
+ * 作为 MVC 架构中的控制器层，负责用户输入处理和业务流程协调。
+ * 
+ * 
+ * 选手管理：查看所有注册选手信息
+ * 场地管理：查看可用场地，支持场地预订
+ * 预订系统：支持时间段预订，包含冲突检测和限制规则
+ * 比赛系统：创建比赛，自动分配场地和选手
+ * 成绩查询：查看选手历史比赛成绩
+ * 
+ * 
+ * @author huJunYang
+ * @since 2025-07-03
+ */
+
+
 package com.badmintonassociation.controller;
 
 // 服务
@@ -37,10 +58,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 
-
-
 public class ConsoleApplication {
-
     private PlayerService playerService;
     private CourtService courtService;
     private ReservationService reservationService;
@@ -54,6 +72,7 @@ public class ConsoleApplication {
         this.matchService = matchService;
     }
     
+
     private void viewPlayerResults(Scanner scanner) {
         System.out.println("请输入选手编号:");
         int playerId = scanner.nextInt();
@@ -115,19 +134,17 @@ public class ConsoleApplication {
         }
     }
 
-    // 1
+
     private void listAllPlayers() {
         playerService.getAllPlayers().forEach(System.out::println);
     }
 
 
-    // 2
+
     private void listAllCourts() {
         courtService.getAllCourts().forEach(System.out::println);
     }
 
-
-    // 3  场地预约
     private void reserveACourt(Scanner scanner) {
         System.out.println("请输入您的用户ID:");
         int playerId = scanner.nextInt();
@@ -227,19 +244,8 @@ public class ConsoleApplication {
         }
     }
 
-    public static void main(String[] args) {
-        // // 示例初始化
-        // PlayerService playerService = new PlayerService(new PlayerDAO(DatabaseConnection.getConnection()));
-        // CourtService courtService = new CourtService(new CourtDAO(DatabaseConnection.getConnection()));
-        // ReservationService reservationService = new ReservationService(
-        //         new ReservationDAO(DatabaseConnection.getConnection()),
-        //         new MatchDAO(DatabaseConnection.getConnection()));
-        // MatchService matchService = new MatchService(new MatchDAO(DatabaseConnection.getConnection()),
-        //         new MatchResultDAO(DatabaseConnection.getConnection()));
 
-        // ConsoleApplication app = new ConsoleApplication(playerService, courtService, reservationService, matchService);
-        // app.start();
-        // 获取数据库连接
+    public static void main(String[] args) {
     Connection connection = DatabaseConnection.getConnection();
 
     // 创建各个 DAO 实例
