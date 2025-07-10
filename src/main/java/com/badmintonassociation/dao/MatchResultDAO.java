@@ -13,7 +13,7 @@ import java.util.List;
  * 提供比赛结果查询、创建等数据库操作方法，
  * 支持比赛统计和分析系统的数据需求。
  * 
- *  @author guoYiFu
+ *  @author huJunYang，huKeHan
  *  @since 2025-07-04
  */
 public class MatchResultDAO implements IBaseDAO<MatchResult> {

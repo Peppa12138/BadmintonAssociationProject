@@ -16,7 +16,7 @@ import java.util.List;
  * - 创建新的选手参赛关联
  * - 管理选手与比赛的多对多关系
  * - 支持比赛参与者的动态管理
- *  @author yuZhongShui
+ *  @author huJunYang，huKeHan
  *  @since 2025-07-03
  */
 public class PlayerMatchDAO implements IBaseDAO<PlayerMatch> {

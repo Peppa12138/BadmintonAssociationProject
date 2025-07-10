@@ -7,6 +7,14 @@ import com.badmintonassociation.util.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * 测试方法
+ * 该类测试插入数据等
+ * 
+ * 
+ * @author yuZhongShui
+ * @since 2025-07-03
+ */
 public class InsertPlayersTest {
 
     public static void main(String[] args) {

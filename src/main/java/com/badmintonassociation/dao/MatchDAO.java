@@ -13,7 +13,7 @@ import java.util.List;
  * - 创建新的比赛记录 (预留接口)
  * - 支持比赛状态查询和管理
  * - 为比赛统计系统提供数据支持
- *  @author guoYiFu
+ *  @author huJunYang，huKeHan
  *  @since 2025-07-04
  */
 

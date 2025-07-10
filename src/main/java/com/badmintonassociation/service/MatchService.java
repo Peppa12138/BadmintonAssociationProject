@@ -21,7 +21,8 @@ import java.util.Random;
  * 该类负责比赛相关的业务逻辑处理，作为控制器层和数据访问层之间的桥梁。
  * 继承自 BaseService，具备统一的异常处理和日志记录能力。
  * 提供比赛创建、选手分配、成绩记录等业务功能，支持自动化比赛调度和管理系统。
- * @author guoYiFu
+ * 
+ * @author huJunYang，huKeHan，yuZhongShui，liSiHan
  * @since 2025-07-03
  */
 

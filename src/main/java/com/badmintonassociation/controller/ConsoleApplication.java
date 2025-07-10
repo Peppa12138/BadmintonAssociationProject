@@ -14,7 +14,7 @@
  * 成绩查询：查看选手历史比赛成绩
  * 
  * 
- * @author huJunYang
+ * @author yuZhongShui，liSiHan，guoYifu
  * @since 2025-07-03
  */
 

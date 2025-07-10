@@ -14,7 +14,7 @@ import java.util.List;
  * - 创建新的场地记录 (预留接口)
  * - 支持场地状态查询和管理
  * - 为场地预订系统提供数据支持
- * @author huJunYang
+ * @author huJunYang，huKeHan
  * @since 2025-07-03
  */
 

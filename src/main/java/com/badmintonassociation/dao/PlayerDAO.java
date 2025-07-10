@@ -12,7 +12,7 @@ import java.util.List;
  * - 创建新选手记录
  * - 获取符合条件的选手列表
  * - 查询选手历史比赛成绩
- *  @author yuZhongShui
+ *  @author huJunYang，huKeHan
  *  @since 2025-07-04
  */
 public class PlayerDAO implements IBaseDAO<Player> {

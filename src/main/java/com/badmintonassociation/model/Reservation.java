@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * 支持两种预订类型：个人训练预订和比赛场地预订。
  * 包含场地分配、时间安排和预订者信息，用于场地资源管理和调度系统。
  * 继承自 BaseEntity，具备统一的实体对象标识能力。
- * @author guoYiFu
+ * @author guoYiFu，guoZiMeng
  * @since 2025-07-03
  */
 

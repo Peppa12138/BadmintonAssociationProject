@@ -6,9 +6,9 @@ package com.badmintonassociation.model;
  * 包含选手的个人基本信息和技术水平等级，用于选手管理、比赛组织和成绩记录。
  * 继承自 BaseEntity，具备统一的实体对象标识能力。
  * 
- * @author guoYiFu
+ * @author guoYiFu，guoZiMeng
  * @since 2025-07-03
-
+ * 
  */
 public class Player extends BaseEntity {
     private int playerId;

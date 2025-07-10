@@ -17,7 +17,8 @@ import java.util.List;
  * 该类负责场地预订相关的业务逻辑处理，作为控制器层和数据访问层之间的桥梁。
  * 继承自 BaseService，具备统一的异常处理和日志记录能力。
  * 提供场地预订、时间冲突检测、预订管理等业务功能，支持场地资源调度和预订管理系统。
- * @author guoYiFu
+ * 
+ * @author huJunYang，huKeHan，yuZhongShui，liSiHan
  * @since 2025-07-03
  */
 
