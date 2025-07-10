@@ -97,5 +97,5 @@ public class MatchService extends BaseService<Match, MatchDAO> {
         Collections.shuffle(eligiblePlayers);
         return eligiblePlayers.subList(0, count);
     }
-    // Additional business logic methods...
+    
 }

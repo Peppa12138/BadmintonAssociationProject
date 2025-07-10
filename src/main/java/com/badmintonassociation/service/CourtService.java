@@ -28,5 +28,5 @@ public class CourtService extends BaseService<Court, CourtDAO> {
         );
     }
 
-    // Additional methods...
+    
 }
